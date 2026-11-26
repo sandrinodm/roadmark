@@ -1,0 +1,20 @@
+name: Feature request
+description: Something a roadmap needs that the format or the site can't express
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to show or do?
+      description: Describe the roadmap situation, not the solution. For example, "we need a go/no-go date inside a release".
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: What do you do today instead?
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Optional. Front matter, a command or a page you have in mind.

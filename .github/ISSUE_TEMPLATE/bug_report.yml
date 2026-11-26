@@ -1,0 +1,39 @@
+name: Bug report
+description: Something in roadmark behaves differently from the docs
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: roadmark version
+      description: Output of `roadmark --version`
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version and OS
+      placeholder: Node 26.13.1, macOS 27
+    validations:
+      required: true
+  - type: dropdown
+    id: command
+    attributes:
+      label: Command
+      options: [init, new, lint, dev, build, preview, schema, other]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The smallest workspace that shows it. A few files pasted here, or a link to a repository.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected and what happened
+      description: Include the full output with `--json` if the command supports it.
+    validations:
+      required: true
