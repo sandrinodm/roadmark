@@ -1,5 +1,9 @@
 # Roadmark
 
+[![npm](https://img.shields.io/npm/v/roadmark)](https://www.npmjs.com/package/roadmark)
+[![CI](https://github.com/sandrinodm/roadmark/actions/workflows/ci.yml/badge.svg)](https://github.com/sandrinodm/roadmark/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/roadmark)](https://github.com/sandrinodm/roadmark/blob/main/LICENSE)
+
 Keep a product roadmap in Git and publish it as a searchable static site. Each feature set has a README and a folder of Markdown or MDX items. An item's frontmatter assigns its release. The site derives release scope, dependency backlinks, person and team profiles, and the timeline from those files.
 
 ## Quick start
