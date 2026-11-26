@@ -5,7 +5,7 @@ import { Schema } from 'effect';
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createInterface } from 'node:readline';
@@ -105,7 +105,14 @@ const root = fileURLToPath(new URL('../', import.meta.url));
  */
 const temp = await mkdtemp(path.join(tmpdir(), 'roadmap-installed-'));
 try {
-  run('pnpm', ['pack', '--pack-destination', temp], root);
+  // The release workflow passes the tarball it will publish; locally the package is packed here.
+  const given = process.argv[2];
+  if (given === undefined) {
+    run('pnpm', ['pack', '--pack-destination', temp], root);
+  } else {
+    await copyFile(path.resolve(given), path.join(temp, 'package.tgz'));
+  }
+
   const archive = (await readdir(temp)).find((entry) => entry.endsWith('.tgz'));
   assert.ok(archive);
   checkPublishedFiles(run('tar', ['-tzf', archive], temp));
