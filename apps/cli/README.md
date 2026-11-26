@@ -1,3 +1,5 @@
+![Markdown pages with headings and checklists turn into a route across a contour map, with the next waypoint highlighted](https://raw.githubusercontent.com/sandrinodm/roadmark/main/docs/images/roadmark-hero.png)
+
 # Roadmark
 
 [![npm](https://img.shields.io/npm/v/roadmark)](https://www.npmjs.com/package/roadmark)
