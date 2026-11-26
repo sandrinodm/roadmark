@@ -1,0 +1,6 @@
+// The workspace root: the shared tool config and repository-wide scripts live here. Each package type-checks itself
+// with its own tsconfig.json; `pnpm typecheck` runs this one and then every package's.
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["vite.config.ts", "scripts"]
+}

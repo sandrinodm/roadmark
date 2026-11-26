@@ -1,0 +1,15 @@
+{
+  "name": "@roadmark/test-fixtures",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The Atlas roadmap workspace shared by the unit and browser tests.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test 'src/**/*.test.ts'",
+    "typecheck": "tsc --noEmit"
+  }
+}

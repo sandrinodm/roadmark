@@ -1,0 +1,87 @@
+---
+id: item-public-api
+title: Public REST API v1
+description: Freeze and document the v1 HTTP API that both SDKs and the CLI are built on.
+outcome: Anyone can integrate Cloche from any language, and v1 stays backwards-compatible until at least February 2028.
+status: in-progress
+release: rel-public-beta
+start: "2026-09-07"
+target: "2026-12-04"
+contributors: [rafael, jonah]
+contributing_teams: [platform]
+jira: [API-9, API-12, API-15]
+links:
+  - label: OpenAPI 3.1 document
+    url: https://api.cloche.example/v1/openapi.json
+---
+
+## Conventions
+
+- Resource IDs are prefixed and opaque: `sbx_`, `snap_`, `vol_`, `key_`.
+- Every mutating request accepts `Idempotency-Key`; a replay within 24 h returns the original response.
+- Errors share one shape with a stable `code` and a `request_id`.
+- Long-running operations (fork, restore) return `202` with the target resources in `provisioning` state; clients poll or subscribe to events.
+
+## Create a sandbox
+
+```bash title="Request"
+curl https://api.cloche.example/v1/sandboxes \
+  -H "Authorization: Bearer $CLOCHE_API_KEY" \
+  -H "Idempotency-Key: 6f1d0c7e-run-4411" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "template": "python-3.12",
+        "resources": { "cpu": 2, "memory": "4GiB", "disk": "20GiB" },
+        "timeout": "30m",
+        "egress": { "policy": "data-analyst" },
+        "metadata": { "agent_run": "run-4411", "customer": "c_92" }
+      }'
+```
+
+```json title="201 Created"
+{
+  "id": "sbx_4k9m2x7q",
+  "object": "sandbox",
+  "state": "running",
+  "template": "python-3.12",
+  "region": "iad",
+  "resources": { "cpu": 2, "memory": "4GiB", "disk": "20GiB" },
+  "egress": { "policy": "data-analyst", "mode": "allowlist" },
+  "created_at": "2026-11-24T16:41:58.211Z",
+  "ready_at": "2026-11-24T16:41:58.393Z",
+  "expires_at": "2026-11-24T17:11:58.393Z",
+  "metadata": { "agent_run": "run-4411", "customer": "c_92" },
+  "links": {
+    "exec": "/v1/sandboxes/sbx_4k9m2x7q/exec",
+    "logs": "wss://stream.cloche.example/v1/sandboxes/sbx_4k9m2x7q/logs"
+  }
+}
+```
+
+```json title="429 Too Many Requests"
+{
+  "error": {
+    "code": "concurrency_limit",
+    "message": "Organisation acme-agents has 100 of 100 concurrent sandboxes running on the Pro plan.",
+    "request_id": "req_01JD8Q4M7ZK3",
+    "docs": "https://docs.cloche.example/errors/concurrency_limit"
+  }
+}
+```
+
+## Endpoints in v1
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/v1/sandboxes` | Create |
+| `GET` | `/v1/sandboxes/:id` | Inspect |
+| `POST` | `/v1/sandboxes/:id/exec` | Run a command, stream with `Accept: text/event-stream` |
+| `POST` | `/v1/sandboxes/:id/snapshots` | Snapshot |
+| `POST` | `/v1/sandboxes/:id/fork` | Fork, `count` 1 to 16 |
+| `POST` | `/v1/snapshots/:id/restore` | Restore into a new sandbox |
+| `PUT`, `GET` | `/v1/sandboxes/:id/files/*path` | Upload and download files |
+| `DELETE` | `/v1/sandboxes/:id` | Stop and delete |
+
+<Decision title="Versioning">
+  Additive changes (new fields, new endpoints, new error codes) ship in v1 at any time. Anything else goes to v2, and v1 is supported for 12 months after v2 ships. We chose path versioning over date-based headers because agent frameworks pin a base URL more reliably than a header.
+</Decision>

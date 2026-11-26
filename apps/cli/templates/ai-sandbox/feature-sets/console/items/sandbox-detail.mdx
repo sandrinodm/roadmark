@@ -1,0 +1,42 @@
+---
+id: item-sandbox-detail
+title: Sandbox detail with live logs and metrics
+description: One page per sandbox with live process logs, CPU and memory charts, forks and egress decisions.
+outcome: When an agent run misbehaves, the engineer sees what the sandbox is doing right now without opening a shell.
+status: in-progress
+release: rel-public-beta
+target: "2026-12-11"
+contributors: [aiyana]
+contributing_teams: [platform]
+depends_on:
+  - item: item-log-streaming
+    reason: The log panel subscribes to the same WebSocket stream as `cloche logs -f`.
+  - item: item-sandbox-metrics
+    reason: The CPU and memory charts read the 1-second host metrics.
+jira: [CON-19, CON-22]
+---
+
+## Design
+
+![Sandbox detail page for sbx_4k9m2x7q with CPU and memory charts on the left, a live log stream on the right and three forks listed below](../media/console-sandbox-detail.png "Sandbox detail, design review build")
+
+![The sandbox list that links to this page](../media/console-sandboxes.png "Entry point: the sandbox list")
+
+The page is laid out for the question "is it stuck, busy or broken?":
+
+1. **Header:** state, template, size, egress mode, creator, and time until timeout. Actions: open shell, snapshot, fork, stop.
+2. **CPU and memory:** last 15 minutes at 1 s resolution. A flat 0% CPU line for more than 2 minutes on a running sandbox shows a hint: "This sandbox looks idle. Stop it or pause it to save $0.17 per hour."
+3. **Logs:** stdout and stderr of every process, tagged with PID and command, interleaved with Cloche's own lifecycle and egress events.
+4. **Forks:** children and their state, with a link to each.
+
+<Decision title="Logs are read-only">
+  We will not add a terminal input to the log panel. "Open shell" is a separate, audited action because typing into a production agent's sandbox is something a security reviewer will ask about.
+</Decision>
+
+## Acceptance criteria
+
+- [x] Log panel renders 2,000 lines per second without dropping frames on a 2020 laptop.
+- [x] Egress decisions appear inline in the log stream.
+- [ ] Charts backfill on page load from the metrics API, then stream.
+- [ ] Forks section lists children with links.
+- [ ] Page is usable at 1280 px width; logs collapse under the charts below 1100 px.

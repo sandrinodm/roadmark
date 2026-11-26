@@ -1,0 +1,55 @@
+---
+id: item-github-action
+title: GitHub Actions integration
+description: A setup action that installs the CLI and authenticates with OIDC, plus a documented workflow.
+outcome: A team can run an agent's tests in a Cloche sandbox from CI by adding eight lines to a workflow and no long-lived secret.
+status: planned
+release: rel-ga
+start: "2027-01-11"
+target: "2027-02-05"
+contributors: [kofi]
+depends_on:
+  - item: item-cli-1-0
+    reason: The action pins a CLI major version and parses its JSON output.
+jira: [CLI-47]
+---
+
+## Why
+
+In beta, 18% of sandboxes were created from CI, mostly to run untrusted agent-written patches before a human reviews them. Every team wrote its own install script and stored an API key as a repository secret.
+
+## The workflow we will document
+
+```yaml title=".github/workflows/agent-patch.yml"
+name: Test agent patch in a sandbox
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write   # exchange the job's OIDC token for a short-lived Cloche key
+
+jobs:
+  sandbox-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cloche-labs/setup-cloche@v1
+        with:
+          version: 1.x
+          org: acme-agents
+      - name: Run tests in an isolated sandbox
+        run: |
+          id=$(cloche create --template node-22 --timeout 15m --json | jq -r .id)
+          trap 'cloche rm "$id"' EXIT
+          cloche cp . "$id:/workspace"
+          cloche exec "$id" --cwd /workspace -- npm ci
+          cloche exec "$id" --cwd /workspace -- npm test
+```
+
+The action exchanges the job's OIDC token for a Cloche key scoped to the organisation, valid for the job's duration and at most 60 minutes. The organisation admin trusts the repository in the console once.
+
+<Risk title="Third-party action supply chain">
+  Customers will pin our action by tag. We will publish it from the public repository with signed, immutable releases and recommend pinning by commit SHA in the docs.
+</Risk>

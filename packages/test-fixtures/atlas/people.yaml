@@ -1,0 +1,9 @@
+maya:
+  name: Maya Chen
+  avatar: avatars/maya.png
+  role: Product Manager
+  teams: [growth, billing]
+noor:
+  name: Noor Patel
+  role: Product Manager
+  teams: [platform, analytics]

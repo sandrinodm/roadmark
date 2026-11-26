@@ -1,0 +1,42 @@
+---
+id: item-starter-templates
+title: Starter templates
+description: Four maintained templates defined in the public repository, plus custom templates from a Dockerfile.
+outcome: 90% of new sandboxes start from a template that already has the agent's toolchain, so the first exec does real work instead of installing packages.
+status: planned
+release: rel-ga
+target: "2027-02-05"
+contributors: [kofi, mei]
+contributing_teams: [runtime]
+jira: [OSS-6, RT-88]
+---
+
+## Templates at GA
+
+| Template | Contents | Snapshot size |
+| --- | --- | --- |
+| `python-3.12` | CPython, uv, pip, git, build-essential | 1.1 GiB |
+| `node-22` | Node 22 LTS, pnpm, git | 0.9 GiB |
+| `ubuntu-24.04` | Base image, git, curl | 0.4 GiB |
+| `browser-chromium` | Headless Chromium, Playwright, fonts | 1.6 GiB |
+
+## Template definition
+
+A template is an OCI image plus a warm-up script. Cloche boots it, runs the warm-up, and stores the result as the template's base snapshot, so the warm-up cost is paid once.
+
+```toml title="templates/browser-chromium/template.toml"
+name = "browser-chromium"
+image = "ghcr.example/cloche-labs/browser-chromium:2027.02"
+default_cpu = 2
+default_memory = "4GiB"
+
+[warmup]
+# Runs once at template build time; the resulting memory is part of the snapshot.
+command = "python -c 'from playwright.sync_api import sync_playwright as p; b = p().start().chromium.launch(); b.close()'"
+timeout = "5m"
+
+[egress]
+default_allow = ["pypi.org", "files.pythonhosted.org"]
+```
+
+Custom templates use the same file with `image` pointing at the customer's registry, built with `cloche template build`.

@@ -1,0 +1,70 @@
+---
+id: item-egress-policy
+title: Network egress policy
+description: Per-sandbox allowlists for outbound traffic, enforced outside the guest, with every decision logged.
+outcome: A prompt-injected agent cannot exfiltrate data to an arbitrary host, and the customer can prove which hosts a sandbox contacted.
+status: in-progress
+release: rel-public-beta
+start: "2026-10-05"
+target: "2026-12-11"
+contributors: [hana, lukas]
+contributing_teams: [platform, devex]
+jira: [RT-64, RT-66, SEC-11]
+links:
+  - label: Egress design (RFC 019)
+    url: https://docs.cloche.example/internal/rfc/019-egress
+---
+
+## Problem
+
+Seventeen alpha partners told us they could not put customer data in a sandbox that can reach the whole internet. An agent that reads a malicious web page can be instructed to `curl` the data somewhere. Filtering inside the guest does not help: the guest is the thing we do not trust.
+
+## Design
+
+All guest traffic leaves through a per-host egress proxy. The guest has no default route except the proxy. The proxy resolves DNS itself, so a policy on hostnames cannot be bypassed by connecting to a raw IP, and it applies the sandbox's policy to TLS SNI and HTTP Host.
+
+```yaml title="policies/data-analyst.yaml"
+# Applied with: cloche policy apply policies/data-analyst.yaml
+name: data-analyst
+mode: allowlist          # allow-all | allowlist | deny-all
+allow:
+  - host: pypi.org
+  - host: files.pythonhosted.org
+  - host: "*.storage.example.com"
+    ports: [443]
+  - cidr: 10.20.0.0/16   # customer VPC via private link, Team plan
+    ports: [5432]
+log:
+  decisions: all         # all | denied | none
+  retention_days: 30
+```
+
+Policies attach per sandbox or as an organisation default, and forks inherit their parent's policy.
+
+```ts title="create-with-policy.ts"
+const sbx = await cloche.sandboxes.create({
+  template: 'python-3.12',
+  egress: { policy: 'data-analyst' },
+});
+```
+
+## Static egress
+
+Some agents call third-party APIs that allowlist the caller's IP. On Pro and above, a sandbox can egress through a static IP attached to the organisation, billed at $15 per month per address. A fork keeps using the same static IP because the address belongs to the egress path, not the VM.
+
+<Decision title="Default for existing beta users">
+  New organisations default to `allowlist` with the package registries for their template. Organisations created before 1 December keep `allow-all` until GA, then get an email and a 30-day window before the default flips. Flipping silently would break hundreds of agents in production.
+</Decision>
+
+<Risk title="DNS rebinding and DoH">
+  An allowed hostname can resolve to an internal address, and a guest can tunnel DNS over HTTPS to an allowed host. The proxy pins the resolved address per connection and blocks private ranges unless they are allowed by CIDR. DoH to an allowed host stays possible; we accept that and say so in the docs.
+</Risk>
+
+## Acceptance criteria
+
+- [x] Proxy enforces `allowlist` and `deny-all` for TCP and UDP, including raw IP connections.
+- [x] Decisions appear in the sandbox's log stream within 2 s.
+- [x] p99 added latency for an allowed HTTPS connection under 3 ms.
+- [ ] Policy editor in the console with a dry-run against the last 24 h of traffic.
+- [ ] Static egress IPs on Pro and Team.
+- [ ] [Penetration test](../../security/items/pentest.md) covers the proxy.

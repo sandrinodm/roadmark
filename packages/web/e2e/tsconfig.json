@@ -1,0 +1,10 @@
+// The browser suites. They run in Node under the e2e runner, but the callbacks they pass to
+// `browser.evaluate` run in the page, so they also need the DOM types.
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es2025", "dom", "dom.iterable"],
+    "tsBuildInfoFile": "../node_modules/.cache/typescript/e2e.tsbuildinfo"
+  },
+  "include": [".", "../e2e.config.ts"]
+}

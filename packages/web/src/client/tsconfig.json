@@ -1,0 +1,8 @@
+// The browser enhancement bundle and its unit tests, as two projects. The bundle's own code
+// (tsconfig.browser.json) runs in readers' browsers and gets the DOM types and no Node types; the
+// unit tests and their DOM helper (tsconfig.test.json) run in Node and get both. This file only
+// lists them, so editors and the type-aware linter find the right project for every file.
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.browser.json" }, { "path": "./tsconfig.test.json" }]
+}

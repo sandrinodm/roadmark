@@ -1,0 +1,8 @@
+growth:
+  name: Growth Engineering
+  description: Owns workspace activation and onboarding.
+platform:
+  name: Platform Engineering
+  description: Maintains shared event infrastructure and integration contracts.
+analytics: Product Analytics
+billing: Billing Engineering

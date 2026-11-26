@@ -1,0 +1,49 @@
+---
+id: item-cold-start
+title: Cold start p95 under 350 ms
+description: Cut the tail of create latency by sizing the warm pool per template and restoring from snapshot instead of booting.
+outcome: 95% of creates return a running sandbox within 350 ms, so an agent never waits on Cloche longer than on its first model token.
+status: in-progress
+release: rel-ga
+start: "2026-11-02"
+target: "2027-01-29"
+contributors: [lukas, mei]
+jira: [RT-81, RT-84]
+---
+
+## Where we are
+
+| Percentile | Alpha (Aug) | Beta (24 Nov) | GA goal |
+| --- | --- | --- | --- |
+| p50 | 210 ms | 182 ms | 160 ms |
+| p95 | 640 ms | 420 ms | 350 ms |
+| p99 | 2.4 s | 1.3 s | 800 ms |
+
+Measured from the API receiving `POST /v1/sandboxes` to the guest agent reporting ready, for the three default templates, over all beta traffic.
+
+## Where the tail comes from
+
+```mermaid title="Create request: warm-pool hit and miss"
+flowchart TD
+  A[POST /v1/sandboxes] --> B{Warm pool has template?}
+  B -->|hit, 93%| C[Claim pre-restored VM]
+  C --> D[Inject secrets, policy, env]
+  D --> E[Ready: p50 150 ms]
+  B -->|miss, 7%| F{Host has snapshot on NVMe?}
+  F -->|yes| G[Restore from local snapshot]
+  F -->|no| H[Stream snapshot from object store]
+  G --> D
+  H --> D
+```
+
+The 7% of misses produce almost all of p95 and p99. Custom templates are 31% of creates but 80% of misses.
+
+## Plan
+
+1. Size the pool per template from the last 7 days of demand, refreshed every minute, instead of a fixed count of 40 per template.
+2. Keep custom templates warm when they were created more than 50 times in the last hour.
+3. Pre-fetch snapshot pages in working-set order (recorded at first restore) instead of on fault.
+
+<Outcome title="Cost of the warm pool">
+  The pool holds about 3% of fleet capacity idle. At GA volumes that is roughly $14,000 per month of hosts we do not bill for. Step 1 is expected to cut that by a third while improving hit rate.
+</Outcome>

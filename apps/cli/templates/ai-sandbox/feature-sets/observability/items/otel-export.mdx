@@ -1,0 +1,41 @@
+---
+id: item-otel-export
+title: OpenTelemetry export
+description: Export sandbox logs, metrics and lifecycle traces over OTLP to the customer's own backend.
+outcome: Teams see Cloche sandboxes in the same dashboards and traces as the rest of their agent stack.
+status: planned
+release: rel-teams-regions
+start: "2027-04-05"
+target: "2027-06"
+contributors: [rafael]
+depends_on:
+  - item: item-sandbox-metrics
+    reason: The exporter reads the same 1-second metrics stream.
+  - item: item-log-streaming
+    reason: Logs are exported from the same per-sandbox stream.
+jira: [OBS-11]
+---
+
+## Configuration
+
+Organisation admins configure one or more OTLP destinations. Agent runs propagate W3C trace context through the SDK, so a sandbox's create, exec and fork spans appear inside the agent's own trace.
+
+```yaml title="otel-export.yaml"
+# cloche telemetry apply otel-export.yaml
+destinations:
+  - name: tracing-prod
+    endpoint: https://otlp.observability.example:4318
+    protocol: http/protobuf
+    headers:
+      x-api-key: ${secret:OTLP_API_KEY}
+    signals: [traces, metrics, logs]
+    sampling:
+      traces: 0.2
+resource_attributes:
+  service.name: cloche-sandbox
+  deployment.environment: production
+```
+
+<Risk title="Export volume">
+  A busy sandbox can produce 2,000 log lines per second. We will cap export at 500 lines per second per sandbox and drop with a counter, rather than buffer and risk memory pressure on the host agent.
+</Risk>

@@ -1,0 +1,9 @@
+node_modules/
+apps/cli/lib/
+dist/
+*.tgz
+.vite-hooks/_/
+.worktrees/
+# e2e runs: reports, traces, app logs and the built Atlas site
+.e2e/
+.claude/

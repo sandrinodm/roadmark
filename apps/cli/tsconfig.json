@@ -1,0 +1,6 @@
+// The roadmark CLI. Node only. Its build (scripts/package.ts) emits JavaScript through a temporary
+// config that extends this one; the scripts have their own config in scripts/tsconfig.json.
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"]
+}

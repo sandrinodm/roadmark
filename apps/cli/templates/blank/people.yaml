@@ -1,0 +1,5 @@
+# One entry per person. The key is a stable ID used in frontmatter (pm, contributors).
+alex:
+  name: Alex Morgan
+  role: Product Manager
+  teams: [product]

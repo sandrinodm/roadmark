@@ -1,0 +1,355 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "number",
+      "enum": [
+        1
+      ]
+    },
+    "colors": {
+      "type": "object",
+      "properties": {
+        "background": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "surface": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "text": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "heading": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "muted": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "border": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "strong_border": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "accent_hover": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "accent_wash": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "inverse_background": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "inverse_text": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "inverse_accent": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Semantic site colors."
+    },
+    "typography": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {
+            "font": {
+              "type": "object",
+              "properties": {
+                "family": {
+                  "type": "string",
+                  "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N} ._&+'-]{0,79}$(?!\\s)"
+                },
+                "file": {
+                  "type": "string",
+                  "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:woff2)$(?!\\s)"
+                },
+                "weight": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 100,
+                      "maximum": 900
+                    },
+                    {
+                      "type": "array",
+                      "prefixItems": [
+                        {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        },
+                        {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        }
+                      ],
+                      "maxItems": 2,
+                      "minItems": 2
+                    }
+                  ]
+                },
+                "license": {
+                  "type": "string",
+                  "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:txt)$(?!\\s)"
+                }
+              },
+              "required": [
+                "family"
+              ],
+              "additionalProperties": false
+            },
+            "tracking": {
+              "type": "number",
+              "minimum": -0.12,
+              "maximum": 0.3
+            },
+            "line_height": {
+              "type": "number",
+              "minimum": 0.8,
+              "maximum": 2.5
+            }
+          },
+          "additionalProperties": false
+        },
+        "display": {
+          "type": "object",
+          "properties": {
+            "font": {
+              "type": "object",
+              "properties": {
+                "family": {
+                  "type": "string",
+                  "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N} ._&+'-]{0,79}$(?!\\s)"
+                },
+                "file": {
+                  "type": "string",
+                  "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:woff2)$(?!\\s)"
+                },
+                "weight": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 100,
+                      "maximum": 900
+                    },
+                    {
+                      "type": "array",
+                      "prefixItems": [
+                        {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        },
+                        {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        }
+                      ],
+                      "maxItems": 2,
+                      "minItems": 2
+                    }
+                  ]
+                },
+                "license": {
+                  "type": "string",
+                  "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:txt)$(?!\\s)"
+                }
+              },
+              "required": [
+                "family"
+              ],
+              "additionalProperties": false
+            },
+            "tracking": {
+              "type": "number",
+              "minimum": -0.12,
+              "maximum": 0.3
+            },
+            "line_height": {
+              "type": "number",
+              "minimum": 0.8,
+              "maximum": 2.5
+            }
+          },
+          "additionalProperties": false
+        },
+        "header": {
+          "type": "object",
+          "properties": {
+            "font": {
+              "type": "object",
+              "properties": {
+                "family": {
+                  "type": "string",
+                  "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N} ._&+'-]{0,79}$(?!\\s)"
+                },
+                "file": {
+                  "type": "string",
+                  "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:woff2)$(?!\\s)"
+                },
+                "weight": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 100,
+                      "maximum": 900
+                    },
+                    {
+                      "type": "array",
+                      "prefixItems": [
+                        {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        },
+                        {
+                          "type": "integer",
+                          "minimum": 100,
+                          "maximum": 900
+                        }
+                      ],
+                      "maxItems": 2,
+                      "minItems": 2
+                    }
+                  ]
+                },
+                "license": {
+                  "type": "string",
+                  "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:txt)$(?!\\s)"
+                }
+              },
+              "required": [
+                "family"
+              ],
+              "additionalProperties": false
+            },
+            "tracking": {
+              "type": "number",
+              "minimum": -0.12,
+              "maximum": 0.3
+            },
+            "line_height": {
+              "type": "number",
+              "minimum": 0.8,
+              "maximum": 2.5
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "Body, heading and header type settings."
+    },
+    "header": {
+      "type": "object",
+      "properties": {
+        "background": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "text": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "muted": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "border": {
+          "type": "string",
+          "pattern": "^#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$(?!\\s)"
+        },
+        "logo": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:png|webp)$(?!\\s)"
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 16,
+              "maximum": 64
+            },
+            "aspect": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 14
+            },
+            "show_title": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "file"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "Header colors and optional logo."
+    },
+    "background": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string",
+          "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:png|webp|jpe?g)$(?!\\s)"
+        },
+        "fit": {
+          "type": "string",
+          "enum": [
+            "cover",
+            "contain",
+            "tile"
+          ]
+        },
+        "position": {
+          "type": "string",
+          "enum": [
+            "center",
+            "top left",
+            "top right"
+          ]
+        }
+      },
+      "required": [
+        "image"
+      ],
+      "additionalProperties": false,
+      "description": "Optional image behind the page."
+    }
+  },
+  "required": [
+    "schema_version"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

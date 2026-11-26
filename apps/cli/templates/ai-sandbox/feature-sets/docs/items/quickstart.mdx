@@ -1,0 +1,32 @@
+---
+id: item-quickstart
+title: Five-minute quickstart
+description: Rewrite the quickstart around install, create, exec, snapshot and fork, with tabs for TypeScript, Python and CLI.
+outcome: Median time from opening the quickstart to the first successful create drops from 9 min 40 s to under 5 minutes.
+status: in-progress
+release: rel-ga
+target: "2027-02-05"
+contributors: [kofi]
+depends_on:
+  - item: item-sdk-typescript
+    reason: The quickstart's code samples target the 1.0 SDK API, which changes `fork()`.
+jira: [DOC-3, CON-28]
+---
+
+## Draft
+
+![Docs quickstart page with a left navigation, three numbered steps with TypeScript code tabs and an "on this page" outline](../media/docs-quickstart.png "Quickstart draft on the new docs layout")
+
+## What changes from the beta quickstart
+
+- **API key in one step.** The console's new-key dialog shows a ready-to-paste `export CLOCHE_API_KEY=…` line (CON-28). This removes the step where 31% of readers dropped off.
+- **One concept per step.** Create and exec, then snapshot and fork. Egress and templates move to their own guides.
+- **Every sample runs in CI** against the staging API with a fresh organisation, so the quickstart cannot rot.
+
+## How we measure it
+
+The docs page emits `quickstart_opened` with an anonymous ID; the API key creation and first `POST /v1/sandboxes` carry the same ID through the console handoff. We report the median and p75 weekly from 1 February.
+
+<Outcome title="Beta baseline">
+  Median 9 min 40 s, p75 22 min, completion 54% within a day. Target at GA: median under 5 min, completion above 70%.
+</Outcome>

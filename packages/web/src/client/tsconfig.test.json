@@ -1,0 +1,12 @@
+// The browser bundle's unit tests and their DOM helper (test-dom.ts). They run in Node under
+// node --test with happy-dom's globals, so they get both the Node and the DOM types. The modules
+// they import are checked here too, but tsconfig.json remains the config that keeps Node types out
+// of the code that ships.
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es2025", "dom", "dom.iterable"],
+    "tsBuildInfoFile": "../../node_modules/.cache/typescript/client-test.tsbuildinfo"
+  },
+  "include": ["**/*.test.ts", "test-dom.ts"]
+}

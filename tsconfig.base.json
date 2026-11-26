@@ -1,0 +1,66 @@
+// Shared compiler options for every package. Each package's tsconfig.json extends this file and
+// only adds what differs for it (DOM types for browser code, its own include list).
+//
+// TypeScript here only type-checks: Node 26 runs the .ts sources directly by stripping types, and
+// apps/cli/scripts/package.ts is the one place that emits JavaScript (for the published CLI).
+{
+  "compilerOptions": {
+    // ---- Language and environment -----------------------------------------------------------
+    // Node 26 implements all of ES2025, so code may use it and nothing newer.
+    "target": "es2025",
+    "lib": ["es2025"],
+    // Only @types/node is loaded implicitly. Browser code replaces this with "types": [].
+    "types": ["node"],
+    // Never look for @typescript/lib-* packages that replace the built-in lib files.
+    "libReplacement": false,
+
+    // ---- Modules ---------------------------------------------------------------------------
+    // Resolve imports exactly as Node does: package "exports", ESM/CJS rules, file extensions.
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    // Every file is a module, even one without imports or exports.
+    "moduleDetection": "force",
+    // Imports and exports are written as they run: `import type` for types, nothing elided.
+    "verbatimModuleSyntax": true,
+    // Each file must be transpilable on its own, as Node's type stripping and esbuild do.
+    "isolatedModules": true,
+    // Only syntax Node can strip: no enums, namespaces, parameter properties or `import =`.
+    "erasableSyntaxOnly": true,
+    // Imports name the .ts file Node runs; the emitting build rewrites them to .js.
+    "rewriteRelativeImportExtensions": true,
+    // A bare `import './x'` must resolve, so a typo in a side-effect import is an error.
+    "noUncheckedSideEffectImports": true,
+
+    // ---- Type checking ---------------------------------------------------------------------
+    // All strict-family checks: strictNullChecks, noImplicitAny, useUnknownInCatchVariables, ...
+    "strict": true,
+    // `x?: T` means the key may be missing, not that it may hold `undefined`.
+    "exactOptionalPropertyTypes": true,
+    // Indexing an array or a record yields `T | undefined`.
+    "noUncheckedIndexedAccess": true,
+    // Keys of an index signature are read with brackets (`env['PORT']`), so a dot always means a
+    // declared property and a misspelt one is an error.
+    "noPropertyAccessFromIndexSignature": true,
+    // Overriding a base class member requires the `override` keyword.
+    "noImplicitOverride": true,
+    // Every code path of a function that returns a value must return one.
+    "noImplicitReturns": true,
+    // A non-empty `case` must end in break, return or throw.
+    "noFallthroughCasesInSwitch": true,
+    // Unused declarations, parameters, labels and unreachable code are errors, not hints.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+
+    // ---- Output and performance ------------------------------------------------------------
+    // Type-check only. The CLI build overrides this in a temporary config of its own.
+    "noEmit": true,
+    // Don't type-check declaration files in node_modules; their own packages check them.
+    "skipLibCheck": true,
+    // Reuse the previous check's results. Each package keeps its cache in its own
+    // node_modules/.cache; nested configs (browser client, e2e, scripts) name their own file.
+    "incremental": true,
+    "tsBuildInfoFile": "${configDir}/node_modules/.cache/typescript/tsconfig.tsbuildinfo"
+  }
+}

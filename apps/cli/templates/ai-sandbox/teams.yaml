@@ -1,0 +1,15 @@
+runtime:
+  name: Runtime
+  description: Owns the microVM host, snapshot store, scheduler and network egress enforcement.
+platform:
+  name: Platform & Trust
+  description: Owns the control-plane API, metering, billing, observability pipeline and security programme.
+devex:
+  name: Developer Experience
+  description: Owns the CLI, the TypeScript and Python SDKs, the open-source repository and the docs.
+web:
+  name: Console & Web
+  description: Owns the web console, the marketing site and the pricing and launch pages.
+gtm:
+  name: Go-to-Market
+  description: Owns positioning, the launch plan, support, community and the announcement.

@@ -1,0 +1,14 @@
+// The browser enhancement bundle. It runs in readers' browsers, not in Node, so it gets the DOM
+// types and no Node types. Its `lib` matches the esbuild `target` in ../client-bundle.ts: esbuild
+// lowers syntax but never polyfills APIs, so TypeScript must not offer anything newer. The unit
+// tests and their DOM helper run in Node, so they type-check with tsconfig.test.json instead.
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "types": [],
+    "tsBuildInfoFile": "../../node_modules/.cache/typescript/client.tsbuildinfo"
+  },
+  "include": ["."],
+  "exclude": ["**/*.test.ts", "test-dom.ts"]
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Stable ID that is independent of the file or directory name."
+    },
+    "title": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Nonblank text."
+    },
+    "description": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Nonblank text."
+    },
+    "outcome": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "The result the work is intended to achieve."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "in-progress",
+        "shipped",
+        "cancelled"
+      ]
+    },
+    "start": {
+      "type": "string",
+      "pattern": "^\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$(?!\\s)",
+      "description": "A calendar date in YYYY-MM-DD format."
+    },
+    "target": {
+      "type": "string",
+      "pattern": "^\\d{4}-(?:Q[1-4]|(?:0[1-9]|1[0-2])(?:-(?:0[1-9]|[12]\\d|3[01]))?)$(?!\\s)",
+      "description": "A target in YYYY-MM-DD, YYYY-MM or YYYY-Q1 format."
+    },
+    "shipped_on": {
+      "type": "string",
+      "pattern": "^\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$(?!\\s)",
+      "description": "Actual ship date, required when status is shipped."
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "description",
+    "outcome",
+    "status",
+    "target"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

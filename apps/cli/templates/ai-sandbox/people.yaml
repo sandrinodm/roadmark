@@ -1,0 +1,60 @@
+ines:
+  name: Ines Okafor
+  avatar: avatars/ines.png
+  role: Head of Product
+  teams: [gtm, web]
+tomas:
+  name: Tomás Varga
+  avatar: avatars/tomas.png
+  role: Product Manager, Runtime and Platform
+  teams: [runtime, platform]
+priya:
+  name: Priya Raman
+  avatar: avatars/priya.png
+  role: Product Manager, Developer Experience
+  teams: [devex]
+lukas:
+  name: Lukas Brenner
+  avatar: avatars/lukas.png
+  role: Engineering Lead, Runtime
+  teams: [runtime]
+mei:
+  name: Mei Takahashi
+  avatar: avatars/mei.png
+  role: Staff Engineer, Snapshots
+  teams: [runtime]
+rafael:
+  name: Rafael Ortiz
+  avatar: avatars/rafael.png
+  role: Engineering Lead, Platform
+  teams: [platform]
+hana:
+  name: Hana Novak
+  avatar: avatars/hana.png
+  role: Security Engineer
+  teams: [platform]
+jonah:
+  name: Jonah Whitfield
+  avatar: avatars/jonah.png
+  role: Engineering Lead, Developer Experience
+  teams: [devex]
+aiyana:
+  name: Aiyana Brooks
+  avatar: avatars/aiyana.png
+  role: Design Lead
+  teams: [web]
+kofi:
+  name: Kofi Mensah
+  avatar: avatars/kofi.png
+  role: Developer Advocate
+  teams: [devex, gtm]
+elena:
+  name: Elena Petrova
+  avatar: avatars/elena.png
+  role: Product Marketing Manager
+  teams: [gtm]
+sam:
+  name: Sam Lindqvist
+  avatar: avatars/sam.png
+  role: Support and Launch Operations
+  teams: [gtm]

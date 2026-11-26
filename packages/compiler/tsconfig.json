@@ -1,0 +1,6 @@
+// The roadmap compiler (workspace files to a typed model and diagnostics) and the script that
+// generates docs/reference.md from its schemas. Node only.
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src", "scripts"]
+}

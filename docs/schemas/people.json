@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "patternProperties": {
+    "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "\\S",
+          "description": "Nonblank text."
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "pattern": "\\S",
+              "description": "Nonblank text."
+            },
+            "avatar": {
+              "type": "string",
+              "pattern": "^[\\w-][\\w .-]*(?:\\/[\\w-][\\w .-]*)*\\.(?:png|webp|jpe?g)$(?!\\s)",
+              "description": "Workspace-relative PNG, JPEG or WebP portrait."
+            },
+            "role": {
+              "type": "string",
+              "pattern": "\\S",
+              "description": "Nonblank text."
+            },
+            "teams": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+                "description": "Team ID from the teams registry."
+              }
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {}
+}

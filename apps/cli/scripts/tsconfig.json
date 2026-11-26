@@ -1,0 +1,11 @@
+// The CLI's build, installed-package smoke test and benchmark. They run in Node, but the
+// benchmark times the site's own search code by importing modules from @roadmark/web's browser
+// client, whose other functions reference DOM globals, so the DOM types are loaded too.
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es2025", "dom", "dom.iterable"],
+    "tsBuildInfoFile": "../node_modules/.cache/typescript/scripts.tsbuildinfo"
+  },
+  "include": ["."]
+}

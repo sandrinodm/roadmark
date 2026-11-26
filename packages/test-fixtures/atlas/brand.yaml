@@ -1,0 +1,6 @@
+schema_version: 1
+header:
+  logo:
+    file: brand/atlas-mark.png
+    height: 28
+    aspect: 1

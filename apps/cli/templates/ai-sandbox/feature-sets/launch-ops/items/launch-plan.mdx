@@ -1,0 +1,141 @@
+---
+id: item-launch-plan
+title: GA launch plan and run of show
+description: The plan, owners, timeline, go/no-go criteria and hour-by-hour run of show for 16 February 2027.
+outcome: Every launch surface goes live within 15 minutes of 16:00 UTC on 16 February, with no Sev-1 and no rollback.
+status: in-progress
+release: rel-ga
+target: "2027-02-16"
+contributors: [elena, rafael, sam, jonah]
+contributing_teams: [web, devex, platform]
+depends_on:
+  - item: item-pentest
+    reason: The go/no-go needs zero open critical or high findings.
+  - item: item-sdk-typescript
+    reason: SDK 1.0 is published to npm at T-0.
+  - item: item-sdk-python
+    reason: SDK 1.0 is published to PyPI at T-0.
+  - item: item-pricing-page
+    reason: Paid plans are enabled and linked from the post at T-0.
+  - item: item-status-page
+    reason: The status page must exist before we invite launch-day traffic.
+  - item: item-support-rotation
+    reason: Launch week is staffed before the announcement goes out.
+  - item: item-public-repo
+    reason: The repository goes public at T-30 minutes so links in the post resolve.
+  - item: item-announcement-post
+    reason: The post is the launch moment.
+jira: [LAUNCH-1]
+links:
+  - label: Launch tracker board
+    url: https://example.atlassian.net/jira/software/projects/LAUNCH/boards/3
+  - label: War room channel
+    url: https://chat.cloche.example/channels/launch-ga
+---
+
+export const launchDay = 'Tuesday 16 February 2027';
+export const waitlist = 11800;
+
+## Goal
+
+Move Cloche from public beta to a paid, supported product on {launchDay}, and convert the {waitlist.toLocaleString('en-US')} waitlisted teams plus new traffic into 1,500 paying organisations within 30 days.
+
+<Outcome title="Launch success metrics, measured at T+30 days">
+  1,500 paying organisations (Pro and above). 25,000 new sign-ups. Create success at or above 99.95%. No Sev-1 incident in launch week. Support first response within 4 hours for 95% of tickets.
+</Outcome>
+
+## What goes live
+
+All of these surfaces switch at T-0. Select any screenshot to page through them.
+
+![The landing page hero with the GA message](../../website/media/landing-hero.png "Website: new landing page")
+
+![The pricing page with Free, Pro, Team and Enterprise plans](../../website/media/pricing.png "Website: pricing")
+
+![The announcement post, "Cloche is generally available"](../media/launch-post.png "Blog: announcement post")
+
+![The public repository README with install instructions](../../oss/media/repo-readme.png "Open source: cloche-labs/cloche")
+
+![The docs quickstart with TypeScript, Python and CLI tabs](../../docs/media/docs-quickstart.png "Docs: five-minute quickstart")
+
+![The CLI creating, snapshotting and forking a sandbox](../../cli/media/cli-terminal.png "CLI 1.0")
+
+![The console sandbox detail page with live logs](../../console/media/console-sandbox-detail.png "Console: sandbox detail")
+
+![The status page showing all systems operational](../media/status-page.png "Status page")
+
+## Timeline to launch
+
+| Date | Milestone | Owner |
+| --- | --- | --- |
+| 11 Dec 2026 | Beta feature freeze; API v1 frozen | Tomás Varga |
+| 15 Jan 2027 | Pricing signed off | Ines Okafor |
+| 29 Jan 2027 | SDK 1.0 release candidates; pen test report | Jonah Whitfield, Hana Novak |
+| 2 Feb 2027 | Launch rehearsal on staging, full run of show | Rafael Ortiz |
+| 9 Feb 2027 | Go/no-go review 1; support rotation staffed | Ines Okafor |
+| 12 Feb 2027 | Copy freeze for post, site and emails | Elena Petrova |
+| 15 Feb 2027 | Go/no-go review 2, 17:00 UTC | Ines Okafor |
+| 16 Feb 2027 | Launch, 16:00 UTC | Everyone |
+
+## Launch-day sequence
+
+```mermaid title="Launch day, 16 February 2027 (UTC)"
+sequenceDiagram
+  autonumber
+  participant IC as Incident commander
+  participant ENG as Platform on-call
+  participant OSS as DevEx
+  participant WEB as Web
+  participant GTM as Go-to-market
+  IC->>ENG: 14:00 final health check, freeze deploys
+  ENG-->>IC: Warm pool at 2x, error budget intact
+  IC->>OSS: 15:30 go
+  Note over OSS: Repo public, publish 1.0
+  OSS-->>IC: Packages resolvable from npm and PyPI
+  IC->>WEB: 15:55 go
+  Note over WEB: Deploy site, paid plans on
+  IC->>GTM: 16:00 go
+  Note over GTM: Post live, batch 1 email
+  GTM-->>IC: Batch 1 sent, sign-up rate on dashboard
+  ENG-->>IC: 16:30 create p95 and error rate report
+  IC->>GTM: 18:00 waitlist cleared if error rate under 0.1%
+```
+
+## Run of show
+
+| Time (UTC) | Action | Owner | Rollback |
+| --- | --- | --- | --- |
+| 14:00 | Deploy freeze; scale warm pool to 2x; final dashboards check | Rafael Ortiz | n/a |
+| 15:00 | War room opens; go/no-go roll call | Ines Okafor | Postpone 24 h |
+| 15:30 | Repository public; tag v1.0.0; npm and PyPI publish | Jonah Whitfield | Unpublish within 72 h, deprecate |
+| 15:55 | Website deploy; paid plans on | Aiyana Brooks | Redeploy previous build, 3 min |
+| 16:00 | Post live; social; waitlist email batch 1 of 5 | Elena Petrova | Pause remaining batches |
+| 16:00 to 18:00 | Batches 2 to 5 every 30 min if create error rate under 0.1% | Sam Lindqvist | Hold batches |
+| 16:30 | First health report in the war room | Rafael Ortiz | n/a |
+| 20:00 | Day summary: sign-ups, paying orgs, incidents, top tickets | Ines Okafor | n/a |
+
+## Go/no-go criteria
+
+- [ ] Zero open critical or high pen test findings.
+- [ ] Create success at or above 99.95% over the previous 7 days.
+- [ ] Create p95 under 350 ms and fork p95 under 1.5 s over the previous 7 days.
+- [ ] Billing reconciliation within 0.1% for the previous 14 nights.
+- [ ] Rehearsal on 2 February completed with every rollback exercised once.
+- [ ] Support rotation staffed for 7 days with named escalation engineers.
+- [ ] Copy frozen and approved by Product, Marketing and Legal.
+
+<Decision title="Waitlist release in batches">
+  We release the 11,800 waitlisted teams in five batches over two hours instead of all at once. Beta launch day saw 1,900 sign-ups in the first hour and pushed create p95 to 2.1 s. Batching keeps the warm pool ahead of demand and gives us a lever if error rates rise.
+</Decision>
+
+<Risk title="Launch traffic exhausts the warm pool">
+  If create p95 exceeds 1 s for 10 minutes, hold the remaining batches and add hosts. We have 60 spare hosts reserved for 72 hours from 14:00 on launch day, enough for 3x beta peak concurrency.
+</Risk>
+
+<Risk title="A competitor announcement the same week">
+  Can't control it. The post leads with fork and egress policy, which we can demonstrate live, not with price.
+</Risk>
+
+## Prerequisites
+
+<DependencyDiagram />

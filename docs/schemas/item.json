@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Stable ID that is independent of the file or directory name."
+    },
+    "title": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Nonblank text."
+    },
+    "description": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Nonblank text."
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "pattern": "\\S",
+            "description": "Reader-facing name for the destination."
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^[Hh][Tt][Tt][Pp][Ss]?:\\/\\/[^/?#\\s\\p{Cc}\\\\][^\\s\\p{Cc}\\\\]*$(?!\\s)"
+          }
+        },
+        "required": [
+          "label",
+          "url"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered list of named web links, each with a label and URL."
+    },
+    "outcome": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "The result the work is intended to achieve."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "planned",
+        "in-progress",
+        "done",
+        "cancelled"
+      ]
+    },
+    "release": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Stable ID of the release."
+    },
+    "start": {
+      "type": "string",
+      "pattern": "^\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$(?!\\s)",
+      "description": "A calendar date in YYYY-MM-DD format."
+    },
+    "target": {
+      "type": "string",
+      "pattern": "^\\d{4}-(?:Q[1-4]|(?:0[1-9]|1[0-2])(?:-(?:0[1-9]|[12]\\d|3[01]))?)$(?!\\s)",
+      "description": "A target in YYYY-MM-DD, YYYY-MM or YYYY-Q1 format."
+    },
+    "pm": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Person ID from the people registry."
+    },
+    "engineering_team": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Team ID from the teams registry."
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+        "description": "Person ID from the people registry."
+      }
+    },
+    "contributing_teams": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+        "description": "Team ID from the teams registry."
+      }
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+            "description": "Stable ID of the prerequisite item."
+          },
+          "reason": {
+            "type": "string",
+            "pattern": "\\S",
+            "description": "Why this work depends on the item."
+          }
+        },
+        "required": [
+          "item"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "jira": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*-[1-9]\\d*$(?!\\s)",
+        "description": "A Jira issue key such as ROAD-123."
+      }
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "description",
+    "outcome",
+    "status"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

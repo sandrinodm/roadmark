@@ -1,0 +1,33 @@
+{
+  "name": "roadmark-workspace",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "benchmark": "pnpm --filter roadmark benchmark",
+    "build": "pnpm --filter roadmark build",
+    "build:site": "node apps/cli/src/main.ts build --root apps/cli/templates/ai-sandbox --out dist",
+    "check": "effect-tsgo vp check",
+    "dev": "node apps/cli/src/main.ts dev --root apps/cli/templates/ai-sandbox",
+    "format": "effect-tsgo vp check --fix",
+    "prepare": "vp config",
+    "preview": "node apps/cli/src/main.ts preview --dir dist",
+    "ready": "pnpm check && pnpm reference --check && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build && pnpm build:site",
+    "reference": "node packages/compiler/scripts/reference.ts",
+    "roadmark": "node apps/cli/src/main.ts",
+    "test": "node scripts/test-pairing.ts && pnpm -r test",
+    "test:e2e": "pnpm --filter @roadmark/web e2e",
+    "test:package": "pnpm --filter roadmark test:package",
+    "typecheck": "tsc --noEmit && pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@effect/tsgo": "0.73.4",
+    "@sandrinodm/oxlint-config": "0.3.0",
+    "@types/node": "^26.6.6",
+    "typescript": "^6.0.3",
+    "vite-plus": "^1.7.0"
+  },
+  "engines": {
+    "node": ">=26"
+  },
+  "packageManager": "pnpm@12.1.0"
+}

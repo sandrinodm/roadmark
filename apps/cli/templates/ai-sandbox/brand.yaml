@@ -1,0 +1,34 @@
+schema_version: 1
+colors:
+  background: '#f1f4f1'
+  surface: '#fbfcfa'
+  text: '#1a231f'
+  heading: '#0e1713'
+  muted: '#56655d'
+  border: '#d8e0da'
+  strong_border: '#a9b8ae'
+  accent: '#1d6b52'
+  accent_hover: '#134d3a'
+  inverse_background: '#0f1714'
+  inverse_text: '#e4eee8'
+  inverse_accent: '#7fd8b0'
+typography:
+  body:
+    font:
+      family: Source Sans 3
+      file: brand/source-sans-3.woff2
+      weight: [200, 900]
+      license: brand/source-sans-3-ofl.txt
+    line_height: 1.6
+  display:
+    tracking: -0.025
+header:
+  background: '#0f1714'
+  text: '#eef5f0'
+  muted: '#a9bdb2'
+  accent: '#7fd8b0'
+  border: '#24332c'
+  logo:
+    file: brand/cloche-mark.png
+    height: 30
+    aspect: 1

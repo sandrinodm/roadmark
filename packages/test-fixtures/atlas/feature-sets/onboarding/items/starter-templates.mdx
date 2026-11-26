@@ -1,0 +1,37 @@
+---
+id: item-starter-templates
+title: Starter templates
+description: Explore templates for common onboarding paths.
+outcome: New teams spend less time configuring their first workspace.
+status: proposed
+---
+
+## Discovery
+
+Interview administrators about the steps they repeat across workspaces.
+
+export const interviewCount = 6
+
+<Decision title="Pilot audience">
+  Interview {interviewCount} workspace administrators before selecting the first template.
+</Decision>
+
+## Pilot sequence
+
+```mermaid title="Template pilot decision"
+flowchart LR
+  A[Interview administrators] --> B[Prototype a template]
+  B --> C{Setup succeeds?}
+  C -->|Yes| D[Expand the pilot]
+  C -->|No| B
+```
+
+## Example template
+
+<Code src="../snippets/starter.json" lang="json" title="starter.json" />
+
+## Design references
+
+![The workspace setup checklist](../media/setup-preview.png "Checklist preview")
+
+![The checklist advancing through setup](../media/checklist.gif "Setup interaction")

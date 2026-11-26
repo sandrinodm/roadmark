@@ -1,0 +1,58 @@
+---
+id: item-sdk-typescript
+title: TypeScript SDK 1.0
+description: "@cloche/sdk 1.0: typed client, streaming exec, fork and explicit resource management."
+outcome: A TypeScript agent can create, use and clean up sandboxes in idiomatic code with no leaks when the agent crashes.
+status: in-progress
+release: rel-ga
+start: "2026-12-07"
+target: "2027-01-29"
+contributors: [jonah]
+depends_on:
+  - item: item-public-api
+    reason: The SDK's generated layer is built from the frozen v1 OpenAPI document.
+jira: [SDK-20, SDK-31]
+links:
+  - label: SDK package (pre-release)
+    url: https://registry.cloche.example/-/web/detail/@cloche/sdk
+---
+
+## Example: a code-interpreter tool
+
+This is the snippet we want on the landing page and in the agent-framework guides. It uses `await using` so the sandbox is stopped even if the tool throws.
+
+```ts title="code-tool.ts"
+import { Cloche, type ExecResult } from '@cloche/sdk';
+
+const cloche = new Cloche(); // reads CLOCHE_API_KEY
+
+export async function runPython(code: string): Promise<ExecResult> {
+  await using sbx = await cloche.sandboxes.create({
+    template: 'python-3.12',
+    timeout: '5m',
+    egress: { mode: 'deny-all' },
+    metadata: { tool: 'run_python' },
+  });
+
+  await sbx.files.write('/workspace/main.py', code);
+
+  const result = await sbx.exec('python /workspace/main.py', {
+    timeoutMs: 60_000,
+    onStdout: (chunk) => process.stdout.write(chunk),
+  });
+
+  if (result.exitCode !== 0) {
+    console.warn(`run_python failed in ${sbx.id}: ${result.stderr.slice(0, 500)}`);
+  }
+  return result; // sbx is stopped here by Symbol.asyncDispose
+}
+```
+
+## 1.0 checklist
+
+- [x] Generated models from the OpenAPI document, published types for every response.
+- [x] `exec` streaming with backpressure; `onStdout` and `onStderr` callbacks or an async iterator.
+- [x] `Symbol.asyncDispose` on sandboxes.
+- [ ] `fork()` returns ready `Sandbox` objects, not IDs (currently returns IDs).
+- [ ] Automatic retries with jitter on `429` and `5xx`, respecting `Retry-After`.
+- [ ] Bundle size under 25 kB gzip for edge runtimes (currently 41 kB).

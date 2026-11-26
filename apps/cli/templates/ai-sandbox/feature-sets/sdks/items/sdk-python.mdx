@@ -1,0 +1,49 @@
+---
+id: item-sdk-python
+title: Python SDK 1.0
+description: The cloche package 1.0 with sync and asyncio clients, context managers and typed models.
+outcome: Python agent frameworks adopt Cloche as a drop-in code execution backend with the same semantics as the TypeScript SDK.
+status: in-progress
+release: rel-ga
+start: "2026-12-07"
+target: "2027-01-29"
+contributors: [kofi]
+depends_on:
+  - item: item-public-api
+    reason: Models and transport are generated from the v1 OpenAPI document.
+jira: [SDK-22, SDK-33]
+---
+
+## Example: async fan-out
+
+```python title="fan_out.py"
+import asyncio
+from cloche import AsyncCloche
+
+client = AsyncCloche()  # reads CLOCHE_API_KEY
+
+async def evaluate(candidates: list[str]) -> list[int]:
+    async with await client.sandboxes.create(template="python-3.12", timeout="10m") as base:
+        await base.exec("pip install -q pytest==8.3.3 numpy==2.1.3")
+        snap = await base.snapshot(name="eval-base")
+
+    async def score(patch: str) -> int:
+        async with await client.snapshots.restore(snap.id) as sbx:
+            await sbx.files.write("/workspace/patch.diff", patch)
+            await sbx.exec("cd /workspace && git apply patch.diff")
+            run = await sbx.exec("pytest -q --tb=no", timeout=120)
+            return run.stdout.count(" passed")
+
+    return await asyncio.gather(*(score(p) for p in candidates))
+```
+
+## Parity
+
+The two SDKs share a conformance suite of 140 scenarios written once in YAML and executed by both test runners against the staging API. 1.0 ships when both pass all of them.
+
+| Area | TypeScript | Python |
+| --- | --- | --- |
+| Conformance scenarios | 131 of 140 | 124 of 140 |
+| Streaming exec | Yes | Yes |
+| Async client | Native | `AsyncCloche` |
+| Resource cleanup | `await using` | `with` / `async with` |

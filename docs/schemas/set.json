@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Stable ID that is independent of the file or directory name."
+    },
+    "title": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Nonblank text."
+    },
+    "description": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Nonblank text."
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "pattern": "\\S",
+            "description": "Reader-facing name for the destination."
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^[Hh][Tt][Tt][Pp][Ss]?:\\/\\/[^/?#\\s\\p{Cc}\\\\][^\\s\\p{Cc}\\\\]*$(?!\\s)"
+          }
+        },
+        "required": [
+          "label",
+          "url"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Ordered list of named web links, each with a label and URL."
+    },
+    "outcome": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "The result the work is intended to achieve."
+    },
+    "pm": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Person ID from the people registry."
+    },
+    "engineering_team": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$(?!\\s)",
+      "description": "Team ID from the teams registry."
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "description",
+    "outcome",
+    "pm",
+    "engineering_team"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

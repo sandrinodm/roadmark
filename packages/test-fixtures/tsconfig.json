@@ -1,0 +1,5 @@
+// Paths to the Atlas fixture workspace shared by the other packages' tests. Node only.
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"]
+}
