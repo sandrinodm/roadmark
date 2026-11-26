@@ -112,12 +112,12 @@ importers:
       '@effect/tsgo':
         specifier: 0.73.4
         version: 0.73.4
-      '@sandrinodm/oxlint-config':
-        specifier: 0.3.0
-        version: 0.3.0(@effect/tsgo@0.73.4)(eslint@10.15.0(jiti@2.7.0))(oxlint@1.94.0(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)))(tsrs@7.1.0-beta.tsrs2)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1))
       '@types/node':
         specifier: ^26.6.6
         version: 26.6.6
+      '@yieldkit/oxlint-config':
+        specifier: 0.4.1
+        version: 0.4.1(@effect/tsgo@0.73.4)(eslint@10.15.0(jiti@2.7.0))(oxlint@1.94.0(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)))(tsrs@7.1.0-beta.tsrs2)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1))
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -1601,16 +1601,6 @@ packages:
     peerDependencies:
       '@redis/client': ^6.3.1
 
-  '@sandrinodm/oxlint-config@0.3.0':
-    resolution: {integrity: sha512-qHivofaeCiZjPBURYUiuGwLia21bOHhrF/lRRdPZDN72t1h+AAMI0KOfCr1VvJJEyqjYCJ0/GO72nxmb+o5rGg==}
-    engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
-    peerDependencies:
-      '@effect/tsgo': ^0.73.4
-      vite-plus: '>=1.7.0'
-    peerDependenciesMeta:
-      '@effect/tsgo':
-        optional: true
-
   '@shikijs/core@4.6.0':
     resolution: {integrity: sha512-bfd4OKgvoyXYiYmMRuleA656P4V7M/Du9lcTl38Ngm6KszMj7bq4J1IGZwSYR4c95Tv5UQALtYNWUwaI9UT3xw==}
     engines: {node: '>=20'}
@@ -1953,6 +1943,16 @@ packages:
     engines: {node: '>=20.0.0'}
     cpu: [x64]
     os: [win32]
+
+  '@yieldkit/oxlint-config@0.4.1':
+    resolution: {integrity: sha512-M6jO06oabuK7yq0EsVY7oinEBLS9r6pD6+n6IqEmiAFcTCmGPV0kk76W0bOUQXF84sNKws09Em6cFvoGUIHOIQ==}
+    engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
+    peerDependencies:
+      '@effect/tsgo': ^0.73.4
+      vite-plus: '>=1.7.0'
+    peerDependenciesMeta:
+      '@effect/tsgo':
+        optional: true
 
   '@yuku-core/binding-android-arm64@0.19.0':
     resolution: {integrity: sha512-wdL2XmTiZixAOaHk9Z0JJZ8u9Qm8d333Zjpc6gaxXFX+UR5BlsfxZ7a2+2Rm71pamppsPYGUGFq2oVLbh6DISw==}
@@ -4026,18 +4026,6 @@ snapshots:
     dependencies:
       '@redis/client': 6.3.1
 
-  '@sandrinodm/oxlint-config@0.3.0(@effect/tsgo@0.73.4)(eslint@10.15.0(jiti@2.7.0))(oxlint@1.94.0(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)))(tsrs@7.1.0-beta.tsrs2)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1))':
-    dependencies:
-      '@cloudflare/oxlint-config': 0.2.0(eslint@10.15.0(jiti@2.7.0))(oxlint@1.94.0(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)))(tsrs@7.1.0-beta.tsrs2)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1))
-      vite-plus: 1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)
-    optionalDependencies:
-      '@effect/tsgo': 0.73.4
-    transitivePeerDependencies:
-      - eslint
-      - eslint-plugin-perfectionist
-      - oxlint
-      - tsrs
-
   '@shikijs/core@4.6.0':
     dependencies:
       '@shikijs/primitive': 4.6.0
@@ -4326,6 +4314,18 @@ snapshots:
 
   '@voidzero-dev/vite-plus-win32-x64-msvc@1.7.0':
     optional: true
+
+  '@yieldkit/oxlint-config@0.4.1(@effect/tsgo@0.73.4)(eslint@10.15.0(jiti@2.7.0))(oxlint@1.94.0(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)))(tsrs@7.1.0-beta.tsrs2)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1))':
+    dependencies:
+      '@cloudflare/oxlint-config': 0.2.0(eslint@10.15.0(jiti@2.7.0))(oxlint@1.94.0(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)))(tsrs@7.1.0-beta.tsrs2)(vite-plus@1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1))
+      vite-plus: 1.7.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(playwright@1.65.1)(typescript@6.0.3)(yaml@2.9.1)
+    optionalDependencies:
+      '@effect/tsgo': 0.73.4
+    transitivePeerDependencies:
+      - eslint
+      - eslint-plugin-perfectionist
+      - oxlint
+      - tsrs
 
   '@yuku-core/binding-android-arm64@0.19.0':
     optional: true

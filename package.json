@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "@effect/tsgo": "0.73.4",
-    "@sandrinodm/oxlint-config": "0.3.0",
     "@types/node": "^26.6.6",
+    "@yieldkit/oxlint-config": "0.4.1",
     "typescript": "^6.0.3",
     "vite-plus": "^1.7.0"
   },

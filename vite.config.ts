@@ -1,7 +1,7 @@
 import type { OxlintOverride } from 'vite-plus/lint';
 
-import { fmtConfig, restrictedImportsOverride } from '@sandrinodm/oxlint-config';
-import oxlintConfig from '@sandrinodm/oxlint-config/effect';
+import { fmtConfig, restrictedImportsOverride } from '@yieldkit/oxlint-config';
+import oxlintConfig from '@yieldkit/oxlint-config/effect';
 import { defineConfig } from 'vite-plus';
 
 /**
