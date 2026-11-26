@@ -32,6 +32,10 @@
     "LICENSE"
   ],
   "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "benchmark": "node scripts/benchmark.ts",
     "build": "node scripts/package.ts",
