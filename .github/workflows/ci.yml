@@ -1,27 +1,63 @@
-name: Verify roadmap
-on: [push, pull_request]
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  # Cancel superseded pull request runs, never a push to main: a release commit must have passed CI.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  verify:
-    runs-on: ubuntu-latest
+  test:
+    name: Test (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            node: 26.0.0
+            full: true
+          - os: macos-latest
+            node: 26
+            full: false
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: 26
-      - run: npm install --global pnpm@12.1.0
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @roadmark/web exec e2e-web install chromium --with-deps
-      - run: pnpm ready
+      - if: matrix.full
+        run: pnpm check
+      - if: matrix.full
+        run: pnpm reference --check
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
       - run: pnpm test:package
-      - run: pnpm benchmark
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ai-sandbox-roadmap
-          path: dist/
-          include-hidden-files: true
-      - uses: actions/upload-artifact@v4
-        if: failure()
+      - if: matrix.full
+        run: pnpm --filter @roadmark/web exec e2e-web install chromium --with-deps
+      - if: matrix.full
+        run: pnpm test:e2e
+      - if: matrix.full
+        run: pnpm build:site
+      - if: matrix.full
+        run: pnpm benchmark
+      - if: failure() && matrix.full
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: e2e-reports
           path: packages/web/.e2e/
           include-hidden-files: true
+          retention-days: 7
